@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terabox Link Streamer</title>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  body {
+    background: #121212;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #1DB954;
+  }
+
+  input[type="text"] {
+    width: 90%;
+    max-width: 500px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: #1e1e1e;
+    color: #fff;
+  }
+
+  button#generateBtn {
+    width: 90%;
+    max-width: 500px;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    background: #1DB954;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 15px;
+  }
+
+  button#generateBtn:hover {
+    background: #1ed760cc;
+  }
+
+  /* Result container */
+  #resultContainer {
+    width: 100%;
+    max-width: 500px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  #shareableLink {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #1e1e1e;
+    color: #1DB954;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    word-break: break-word;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: all 0.2s;
+  }
+
+  #shareableLink:hover {
+    background: #272727;
+    color: #1ed760;
+  }
+
+  #copyBtn {
+    width: 100%;
+    padding: 12px;
+    background: #1DB954;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #copyBtn:hover {
+    background: #1ed760cc;
+  }
+
+  @media (max-width: 600px) {
+    input[type="text"], button#generateBtn, #shareableLink, #copyBtn {
+      width: 95%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Terabox Link Streamer</h1>
+
+<input type="text" id="teraboxUrl" placeholder="Paste Terabox link">
+<button id="generateBtn">Generate Link</button>
+
+<div id="resultContainer">
+  <a id="shareableLink" href="#" target="_blank">Your link will appear here</a>
+  <button id="copyBtn">Copy Link</button>
+</div>
+
+<script>
+  const resultContainer = document.getElementById("resultContainer");
+  const shareableLink = document.getElementById("shareableLink");
+  const copyBtn = document.getElementById("copyBtn");
+
+  document.getElementById("generateBtn").addEventListener("click", async () => {
+    const url = document.getElementById("teraboxUrl").value.trim();
+    if (!url) return alert("Paste a Terabox URL!");
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url })
+      });
+
+      const data = await res.json();
+
+      if (data.shortLink) {
+        const fullLink = window.location.origin + data.shortLink;
+
+        // Set clickable link
+        shareableLink.href = fullLink;
+        shareableLink.textContent = fullLink;
+
+        // Show container
+        resultContainer.style.display = "flex";
+      } else {
+        alert("Failed to generate link");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error generating link");
+    }
+  });
+
+  copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(shareableLink.href)
+      .then(() => {
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => { copyBtn.textContent = "Copy Link"; }, 1500);
+      })
+      .catch(err => console.error(err));
+  });
+</script>
+
+</body>
+</html>
