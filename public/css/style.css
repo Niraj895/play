@@ -1,0 +1,193 @@
+/* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background: #121212;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* ===== Headings ===== */
+h1, h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #1DB954;
+}
+
+/* ===== Video Container ===== */
+.video-container {
+  width: 100%;
+  max-width: 720px;
+  margin: 15px auto;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+}
+
+video {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* ===== Download Button ===== */
+#downloadBtn {
+  display: inline-block;
+  margin: 18px 0;
+  padding: 12px 25px;
+  background: #1DB954;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+#downloadBtn:hover {
+  background: #1ed760cc;
+}
+
+/* ===== Shareable Link Box ===== */
+#shareableBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 720px;
+  width: 100%;
+  background: #1e1e1e;
+  padding: 12px 18px;
+  margin: 15px 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+#shareableLink {
+  color: #1DB954;
+  text-decoration: none;
+  word-break: break-word;
+  flex: 1;
+  font-weight: bold;
+}
+
+#shareableLink:hover {
+  color: #1ed760;
+}
+
+#copyBtn {
+  margin-left: 15px;
+  padding: 10px 20px;
+  background: #1DB954;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#copyBtn:hover {
+  background: #1ed760cc;
+}
+
+/* ===== Cards Section ===== */
+.cards {
+  max-width: 720px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+}
+
+.card h3 {
+  margin-bottom: 8px;
+  color: #1DB954;
+  font-size: 16px;
+}
+
+.card p,
+.card a {
+  font-size: 14px;
+  color: #ddd;
+  text-decoration: none;
+  line-height: 1.5;
+}
+
+.card a:hover {
+  color: #1DB954;
+}
+
+/* ===== Input / Buttons (if used elsewhere) ===== */
+input[type="text"] {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: #1e1e1e;
+  color: #fff;
+}
+
+button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  background: #1DB954;
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #1ed760cc;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  #shareableBox {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  #copyBtn {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+/* Title styling */
+h2#title {
+    font-size: 20px; /* Reduce size from default 24-28 */
+    margin-bottom: 15px;
+    color: #1DB954;
+    text-align: center;
+    word-break: break-word;
+}
