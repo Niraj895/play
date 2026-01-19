@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Video Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- HLS -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+body {
+  margin: 0;
+  padding: 15px;
+  background: #121212;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+h2 {
+  font-size: 14px;
+  color: #1db954;
+  margin-bottom: 10px;
+}
+
+.video-box {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+video {
+  width: 100%;
+}
+
+/* LOADER */
+.progress-wrap {
+  width: 100%;
+  max-width: 720px;
+  height: 4px;
+  background: #222;
+  border-radius: 3px;
+  margin: 10px auto 15px;
+  overflow: hidden;
+  transition: opacity 0.4s ease, height 0.4s ease;
+}
+
+.progress-wrap.hide {
+  opacity: 0;
+  height: 0;
+}
+
+.progress-bar {
+  width: 30%;
+  height: 100%;
+  background: #1db954;
+  animation: loading 1.2s linear infinite;
+}
+
+@keyframes loading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* BUTTON */
+#downloadBtn {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background: #1db954;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+#downloadBtn:hover {
+  background: #1ed760;
+}
+
+/* SHORT LINK */
+.shortlink-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.shortlink-container input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  width: 220px;
+  background: #1e1e1e;
+  color: #1db954;
+}
+
+.shortlink-container button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #1db954;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* CARDS */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin: 30px auto 10px;
+  max-width: 720px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  width: 140px;
+  height: auto;
+  min-height: 120px;
+  text-decoration: none;
+  color: #fff;
+  transition: border-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.card:hover {
+  border-color: #1db954;
+  transform: translateY(-5px);
+}
+
+.card .icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.card .title {
+  color: #1db954;
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.card .subtitle {
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1db954;
+  color: #000;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.toast.show {
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<h2 id="title">Loading video...</h2>
+
+<div class="video-box">
+  <video id="video" controls playsinline></video>
+</div>
+
+<!-- LOADER -->
+<div class="progress-wrap" id="videoLoader">
+  <div class="progress-bar"></div>
+</div>
+
+<a id="downloadBtn" href="#" target="_blank">Download</a>
+
+<!-- SHORT LINK -->
+<div class="shortlink-container">
+  <input type="text" id="shortLinkInput" readonly />
+  <button id="copyBtn">Copy</button>
+</div>
+
+<!-- RESPONSIVE CARDS -->
+<div class="cards-container">
+  <a href="https://t.me/+CFHO5V5SPO4xMDNl" target="_blank" class="card">
+    <div class="icon">💬</div>
+    <div class="title">Telegram Channel-1</div>
+    <div class="subtitle">Join for updates</div>
+  </a>
+  <a href="https://t.me/+UheFJS7rTiUyOGVl" target="_blank" class="card">
+    <div class="icon">💬</div>
+    <div class="title">Telegram channel-2</div>
+    <div class="subtitle">Backup channels</div>
+  </a>
+  <a href="https://t.me/Cloudy_support" target="_blank" class="card">
+    <div class="icon">📱</div>
+    <div class="title">Contact us</div>
+    <div class="subtitle">How to use</div>
+  </a>
+  <a href="/privacy.html" target="_blank" class="card">
+    <div class="icon">🔒</div>
+    <div class="title">Privacy Policy</div>
+    <div class="subtitle">We respect your privacy. We do not collect personal information (name, email, phone). We may collect non-personal data like IP address, browser, and device type. Cookies may be used to improve user experience. Third-party ads may use cookies or similar technologies. We are not responsible for external links or third-party websites. By using this website, you agree to this privacy policy.</div>
+  </a>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+function hideLoader() {
+  const loader = document.getElementById("videoLoader");
+  loader.classList.add("hide");
+  setTimeout(() => loader.style.display = "none", 500);
+}
+
+async function loadVideo() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (!token) return showToast("Invalid link");
+
+  let teraboxUrl;
+  try {
+    teraboxUrl = atob(token);
+  } catch {
+    return showToast("Invalid token");
+  }
+
+  const res = await fetch("/api/fetchStream", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: teraboxUrl })
+  });
+
+  const data = await res.json();
+  if (!data?.fast_stream_url) return showToast("Video unavailable");
+
+  document.getElementById("title").innerText = data.name || "Video";
+  document.getElementById("downloadBtn").href =
+    data.download_link || teraboxUrl;
+
+  // SHORT LINK
+  try {
+    const s = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: teraboxUrl })
+    });
+    const sd = await s.json();
+    if (sd.shortLink) {
+      const input = document.getElementById("shortLinkInput");
+      input.value = location.origin + sd.shortLink;
+      document.getElementById("copyBtn").onclick = () => {
+        navigator.clipboard.writeText(input.value);
+        showToast("Link copied");
+      };
+    }
+  } catch {}
+
+  const stream =
+    data.fast_stream_url["720p"] ||
+    data.fast_stream_url["480p"] ||
+    data.fast_stream_url["360p"];
+
+  const video = document.getElementById("video");
+
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(stream);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, hideLoader);
+  } else {
+    video.src = stream;
+    video.addEventListener("loadedmetadata", hideLoader);
+  }
+}
+
+loadVideo();
+</script>
+
+</body>
+</html>
