@@ -1,49 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Advertisement</title>
-  <link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8">
+<title>Verification Required</title>
+<!-- HilltopAds Verification Meta Tag -->
+    <meta name="ce87d720cdb61cc0306ab814dc50850ddd61e91e" content="ce87d720cdb61cc0306ab814dc50850ddd61e91e" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #1f2937, #020617);
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #fff;
+  }
+
+  /* Page wrapper to keep space for ads */
+  .page-wrapper {
+    min-height: 100vh;
+    padding: 90px 15px 90px; /* TOP & BOTTOM SPACE */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Notice above card */
+  .notice {
+    max-width: 380px;
+    width: 100%;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: #e0f2fe;
+    font-size: 13px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    text-align: center;
+    line-height: 1.45;
+  }
+
+  /* Main card */
+  .card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    padding: 30px 25px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,.6);
+  }
+
+  .card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #38bdf8;
+  }
+
+  .desc {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 25px;
+  }
+
+  /* Ad button */
+  #adLink {
+    display: block;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(34,197,94,.4);
+  }
+
+  /* Continue button */
+  #continueBtn {
+    display: none;
+    margin-top: 18px;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  .note {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 15px;
+  }
+</style>
 </head>
+
 <body>
 
-<h1>Please Wait</h1>
-<p>Redirecting in <span id="countdown">5</span> seconds</p>
+<div class="page-wrapper">
 
-<a id="continueBtn" style="display:none;">Continue</a>
+  <!-- NOTICE -->
+  <div class="notice">
+    <strong>🔔 Important Notice</strong><br>
+    To unlock your video, click the <b>Continue & Unlock</b> button.<br>
+    Complete the short verification, then press the <b>Back</b> button to return and continue.
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="card">
+    <h3>🔐 Verification Required</h3>
+
+    <p class="desc">
+      Complete a quick verification to continue
+    </p>
+
+    <!-- SAME TAB AD LINK -->
+    <a
+      id="adLink"
+      href="https://www.effectivegatecpm.com/zhd3hrmn?key=25e0446022340a2d3ab7d6b2cb8a964a"
+    >
+      🚀 Continue & Unlock
+    </a>
+
+    <button id="continueBtn">
+      ✅ I Have Completed The Step
+    </button>
+
+    <div class="note">
+      Complete the ad and come back to continue.
+    </div>
+  </div>
+
+</div>
 
 <script>
-  const token = new URLSearchParams(window.location.search).get("token");
-  const countdown = document.getElementById("countdown");
-  const btn = document.getElementById("continueBtn");
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
 
-  let time = 5;
+  const adLink = document.getElementById("adLink");
+  const continueBtn = document.getElementById("continueBtn");
 
-  fetch("/api/adlink", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      target: `${window.location.origin}/page2.html?token=${token}`
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (!data.adLink) {
-      countdown.textContent = "Ad failed";
-      return;
+  if (!token) {
+    alert("Invalid link");
+  }
+
+  // Mark ad click
+  adLink.addEventListener("click", () => {
+    sessionStorage.setItem("adClicked", "yes");
+  });
+
+  // When user comes back using back button
+  window.addEventListener("pageshow", () => {
+    if (sessionStorage.getItem("adClicked") === "yes") {
+      continueBtn.style.display = "block";
     }
+  });
 
-    const timer = setInterval(() => {
-      time--;
-      countdown.textContent = time;
-      if (time <= 0) {
-        clearInterval(timer);
-        btn.style.display = "inline-block";
-        btn.href = data.adLink; // 🔥 ShrinkMe ad
-      }
-    }, 1000);
+  // Continue to page2
+  continueBtn.addEventListener("click", () => {
+    if (!token) return;
+    window.location.href = `/page2.html?token=${encodeURIComponent(token)}`;
   });
 </script>
 
 </body>
 </html>
+</body>
+</html>
+
