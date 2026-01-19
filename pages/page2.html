@@ -1,5 +1,49 @@
-<a
-  href="https://shrinkme.io/st?api=62ac1fe26507363ddbe432ce66ada329ab63f9ce&url=http://localhost:3000/play.html?token=TOKEN"
-  target="_self">
-  Watch Video
-</a>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Almost Done</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Almost There</h1>
+<p>Redirecting in <span id="countdown">5</span> seconds</p>
+
+<a id="playBtn" style="display:none;">Watch Video</a>
+
+<script>
+  const token = new URLSearchParams(window.location.search).get("token");
+  const countdown = document.getElementById("countdown");
+  const btn = document.getElementById("playBtn");
+
+  let time = 5;
+
+  fetch("/api/adlink", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      target: `${window.location.origin}/play.html?token=${token}`
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.adLink) {
+      countdown.textContent = "Ad failed";
+      return;
+    }
+
+    const timer = setInterval(() => {
+      time--;
+      countdown.textContent = time;
+      if (time <= 0) {
+        clearInterval(timer);
+        btn.style.display = "inline-block";
+        btn.href = data.adLink; // 🔥 ShrinkMe ad
+      }
+    }, 1000);
+  });
+</script>
+
+</body>
+</html>
